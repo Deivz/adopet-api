@@ -1,0 +1,17 @@
+{
+    "name": "deivz/adopet-api",
+    "description": "API para cadastro de pets para adoção no site adopet",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Deivz\\AdopetApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Deivz",
+            "email": "carlosd_oliveira@hotmail.com"
+        }
+    ],
+    "require": {}
+}
