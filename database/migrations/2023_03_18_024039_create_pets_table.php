@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('estado');
             $table->binary('foto');
             $table->unsignedBigInteger('cod_responsavel');
-            $table->unsignedBigInteger('cod_adotante');
+            $table->unsignedBigInteger('cod_adotante')->nullable();
             $table->timestamps();
             
             $table->foreign('cod_responsavel')->references('id')->on('responsaveis');

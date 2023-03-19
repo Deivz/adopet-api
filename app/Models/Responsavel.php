@@ -9,7 +9,7 @@ class Responsavel extends Model
 {
     use HasFactory;
 
-    protected $table = 'reponsaveis';
+    protected $table = 'responsaveis';
     public $timestamps = true;
 
     protected $fillable = [

@@ -10,14 +10,21 @@ class Pessoa extends Model
     use HasFactory;
 
     // protected $table = 'pessoas';
+    protected $primaryKey = 'cod_responsavel';
     public $timestamps = true;
 
     protected $fillable = [
+        'cod_responsavel',
         'cpf'
     ];
 
-    public function responsaveis()
+    // public function responsaveis()
+    // {
+    //     return $this->hasMany(Responsavel::class, 'cod_responsavel');
+    // }
+
+    public function responsavel()
     {
-        return $this->hasMany(Responsavel::class, 'cod_responsavel');
+        return $this->hasOne(Responsavel::class, 'cod_responsavel');
     }
 }
