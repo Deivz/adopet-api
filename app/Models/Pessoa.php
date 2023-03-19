@@ -9,7 +9,6 @@ class Pessoa extends Model
 {
     use HasFactory;
 
-    // protected $table = 'pessoas';
     protected $primaryKey = 'cod_responsavel';
     public $timestamps = true;
 
@@ -18,13 +17,8 @@ class Pessoa extends Model
         'cpf'
     ];
 
-    // public function responsaveis()
-    // {
-    //     return $this->hasMany(Responsavel::class, 'cod_responsavel');
-    // }
-
-    public function responsavel()
+    public function responsaveis()
     {
-        return $this->hasOne(Responsavel::class, 'cod_responsavel');
+        return $this->belongsTo(Responsavel::class, 'cod_responsavel', 'id');
     }
 }

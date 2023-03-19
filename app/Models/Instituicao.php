@@ -19,6 +19,6 @@ class Instituicao extends Model
 
     public function responsaveis()
     {
-        return $this->hasMany(Responsavel::class, 'cod_responsavel');
+        return $this->belongsTo(Responsavel::class, 'cod_responsavel', 'id');
     }
 }
