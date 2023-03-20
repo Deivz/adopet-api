@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('responsaveis', function (Blueprint $table) {
             $table->id();
             $table->string('nome', 50);
-            $table->string('telefone', 13);
+            $table->string('telefone', 15);
             $table->string('email', 50);
             $table->timestamps();
         });

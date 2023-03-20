@@ -12,8 +12,9 @@ Route::controller(AdotanteController::class)->group(function() {
 });
 
 Route::controller(ResponsavelController::class)->group(function() {
-    Route::get('/responsavel', 'index');
-    Route::post('/responsavel', 'store');
+    Route::get('/responsaveis', 'index');
+    Route::get('/responsaveis/{responsavel}', 'show');
+    Route::post('/responsaveis', 'store');
 });
 
 

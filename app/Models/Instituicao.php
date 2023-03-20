@@ -14,6 +14,7 @@ class Instituicao extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'cod_responsavel',
         'cnpj'
     ];
 
