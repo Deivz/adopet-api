@@ -43,9 +43,31 @@ class PetController extends Controller
     }
 
 
-    public function update(Request $request, Pet $pet)
+    public function update(Request $request, Pet $pet): JsonResponse
     {
-        //
+        try {
+            $this->validateRequest($request);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'errors' => $exception->errors(),
+            ], 400);
+        }
+
+        $pet = Pet::find($pet->id);
+
+        if($pet){
+            $pet->update($request->all());
+    
+            return response()->json([
+                'message' => 'Pet cadastrado com sucesso',
+                'data' => $pet
+            ]);
+        }
+
+        return response()->json([
+            'errors' => 'Pet não encontrado',
+        ], 404);
+
     }
 
 
