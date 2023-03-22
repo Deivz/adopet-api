@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PetsResource;
 use App\Models\Pet;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,7 @@ class PetController extends Controller
     }
 
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse | PetsResource
     {
         try {
             $this->validateRequest($request);
@@ -28,22 +29,38 @@ class PetController extends Controller
             ], 400);
         }
 
-        $pet = Pet::create($request->all());
+        $data = $request->all();
 
-        return response()->json([
-            'message' => 'Pet cadastrado com sucesso',
-            'data' => $pet
-        ]);
+        if ($request->hasFile('foto')) {
+            $photo = $request->file('foto');
+            $filename = time() . '_' . $photo->getClientOriginalName();
+            $photo->storeAs('pets', $filename, 'public');
+            $data['foto'] = $filename;
+        }
+
+        $pet = Pet::create($data);
+
+        return new PetsResource($pet);
     }
 
 
-    public function show(Pet $pet): Pet
+    public function show(Pet $pet): PetsResource
     {
-        return $pet;
+        $pet = Pet::find($pet->id);
+        if ($pet) {
+            $data = $pet;
+            if ($pet->foto) {
+                $path = storage_path('app/public/pets/' . $pet->foto);
+                $data['foto'] = $path;
+            }
+            return new PetsResource($data);
+        }
+
+        abort(404);
     }
 
 
-    public function update(Request $request, Pet $pet): JsonResponse
+    public function update(Request $request, Pet $pet): JsonResponse | PetsResource
     {
         try {
             $this->validateRequest($request);
@@ -55,25 +72,29 @@ class PetController extends Controller
 
         $pet = Pet::find($pet->id);
 
-        if($pet){
+        if ($pet) {
             $pet->update($request->all());
-    
-            return response()->json([
-                'message' => 'Pet cadastrado com sucesso',
-                'data' => $pet
-            ]);
+
+            return new PetsResource($pet);
         }
 
         return response()->json([
             'errors' => 'Pet não encontrado',
         ], 404);
-
     }
 
 
-    public function destroy(Pet $pet)
+    public function destroy(Pet $pet): JsonResponse
     {
-        //
+        $pet = Pet::find($pet->id);
+        if ($pet) {
+            $pet->delete();
+            return response()->json([
+                'message' => 'Pet excluído com sucesso',
+            ], 201);
+        }
+
+        abort(404);
     }
 
     public function validateRequest(Request $request): void
@@ -100,7 +121,7 @@ class PetController extends Controller
                 'bail', 'required', 'max:2'
             ],
             'foto' => [
-                'bail', 'nullable', 'image', 'mimes: jpg, jpeg, png, bmp, svg', 'max:1000'
+                'bail', 'nullable', 'image', 'mimes: jpg,jpeg,png,bmp,svg', 'max:1000'
             ],
             'cod_responsavel' => [
                 'bail', 'required', 'max:100'

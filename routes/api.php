@@ -23,6 +23,7 @@ Route::controller(PetController::class)->group(function() {
     Route::get('/pets/{pet}', 'show');
     Route::post('/pets', 'store');
     Route::put('/pets/{pet}', 'update');
+    Route::delete('/pets/{pet}', 'destroy');
 });
 
 
