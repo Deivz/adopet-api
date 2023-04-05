@@ -11,8 +11,8 @@ class PetsResource extends JsonResource
     {
         return [
             'id' => (string) $this->id,
-            'tipo' => 'Pets',
-            'atributos' => [
+            'type' => 'Pets',
+            'attributes' => [
                 'nome' => $this->nome,
                 'idade' => $this->idade,
                 'porte' => $this->porte,

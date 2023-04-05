@@ -11,7 +11,6 @@ class Responsavel extends Model
 
     protected $table = 'responsaveis';
     public $timestamps = true;
-
     protected $fillable = [
         'nome',
         'telefone',

@@ -11,7 +11,6 @@ class Pet extends Model
 
     protected $table = 'pets';
     public $timestamps = true;
-    // protected $hidden = ['foto'];
     protected $fillable = [
         'nome', 'idade', 'porte', 'perfil', 'cidade', 'estado', 'foto', 'cod_responsavel', 'cod_adotante'
     ];

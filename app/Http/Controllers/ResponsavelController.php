@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ResponsaveisResource;
 use App\Models\Responsavel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,7 @@ class ResponsavelController extends Controller
     }
 
 
-    public function store(Request $request): JsonResponse | ValidationException
+    public function store(Request $request): JsonResponse | ResponsaveisResource
     {
         foreach ($request->except(['nome', 'telefone', 'email']) as $key => $part) {
             $document = $key;
@@ -49,28 +50,81 @@ class ResponsavelController extends Controller
             $document => $request->input($document)
         ]);
 
+        return new ResponsaveisResource($responsavel);
+
+        // return response()->json([
+        //     'message' => 'Responsável criado com sucesso',
+        //     'data' => $responsavel
+        // ], 201);
+    }
+
+
+    public function show(Responsavel $responsavel): ResponsaveisResource
+    {
+        $responsavel = Responsavel::find($responsavel->id);
+
+        if($responsavel){
+            return new ResponsaveisResource($responsavel);  
+        }
+        
+        abort(404);
+    }
+
+
+    public function update(Request $request, Responsavel $responsavel): JsonResponse | ResponsaveisResource
+    {
+        foreach ($request->except(['nome', 'telefone', 'email']) as $key => $part) {
+            $document = $key;
+        }
+
+        if ($document === 'cpf') {
+            $model = 'Pessoa';
+            $table = 'pessoas';
+        } else {
+            $model = 'Instituicao';
+            $table = 'instituicoes';
+        }
+
+        $modelClass = 'App\\Models\\' . $model;
+
+        try {
+            $this->validateRequest($request, $document, $table);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'errors' => $exception->errors(),
+            ], 400);
+        }
+
+        $responsavel = Responsavel::find($responsavel->id);
+
+        $modelClass::update([
+            'cod_responsavel' => $responsavel->id,
+            $document => $request->input($document)
+        ]);
+
+        if ($responsavel) {
+            $responsavel->update($request->all());
+
+            return new ResponsaveisResource($responsavel);
+        }
+
         return response()->json([
-            'message' => 'Responsável criado com sucesso',
-            'data' => $responsavel
-        ], 201);
+            'errors' => 'Pet não encontrado',
+        ], 404);
     }
 
 
-    public function show(Responsavel $responsavel): Responsavel
+    public function destroy(Responsavel $responsavel): JsonResponse
     {
-        return $responsavel;
-    }
+        $responsavel = Responsavel::find($responsavel->id);
+        if ($responsavel) {
+            $responsavel->delete();
+            return response()->json([
+                'message' => 'Responsável excluído com sucesso',
+            ], 201);
+        }
 
-
-    public function update(Request $request, Responsavel $responsavel)
-    {
-        //
-    }
-
-
-    public function destroy(Responsavel $responsavel)
-    {
-        //
+        abort(404);
     }
 
     public function validateRequest(Request $request, string $document, string $table): void
