@@ -16,8 +16,8 @@ Route::controller(ResponsavelController::class)->group(function() {
     Route::get('/responsaveis', 'index');
     Route::get('/responsaveis/{responsavel}', 'show');
     Route::post('/responsaveis', 'store');
-    // Route::get('/responsaveis/{responsavel}', 'update');
-    // Route::get('/responsaveis/{responsavel}', 'destroy');
+    Route::put('/responsaveis/{responsavel}', 'update');
+    Route::delete('/responsaveis/{responsavel}', 'destroy');
 });
 
 Route::controller(PetController::class)->group(function() {
