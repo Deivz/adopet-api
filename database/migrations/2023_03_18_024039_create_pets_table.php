@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('perfil');
             $table->string('cidade');
             $table->string('estado');
-            $table->binary('foto');
+            $table->string('foto')->nullable();
             $table->unsignedBigInteger('cod_responsavel');
             $table->unsignedBigInteger('cod_adotante')->nullable();
             $table->timestamps();
