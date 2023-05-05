@@ -13,17 +13,17 @@ class PetsResource extends JsonResource
             'id' => (string) $this->id,
             'type' => 'Pets',
             'attributes' => [
-                'nome' => $this->nome,
-                'idade' => $this->idade,
-                'porte' => $this->porte,
-                'perfil' => $this->perfil,
-                'cidade' => $this->cidade,
-                'estado' => $this->estado,
-                'foto' => $this->foto,
-                'cod_responsavel' => $this->cod_responsavel,
-                'cod_adotante' => $this->cod_adotante,
-                'criado_em' => $this->created_at,
-                'atualizado_em' => $this->updated_at
+                'name' => $this->nome,
+                'age' => $this->idade,
+                'size' => $this->porte,
+                'temperament' => $this->perfil,
+                'city' => $this->cidade,
+                'country' => $this->estado,
+                'photo' => $this->foto,
+                'responsible' => $this->cod_responsavel,
+                'adopter' => $this->cod_adotante,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at
             ]
         ];
     }

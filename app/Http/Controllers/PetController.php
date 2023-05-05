@@ -15,9 +15,14 @@ class PetController extends Controller
 
     public function index(): Collection
     {
-        return Pet::all();
-    }
+        // return Pet::all();
+        $pets = Pet::all()->map(function($pet) {
+            $pet->foto = url('api/storage/pets/' . $pet->foto);
+            return $pet;
+        });
 
+        return $pets;
+    }
 
     public function store(Request $request): JsonResponse | PetsResource
     {
@@ -38,9 +43,11 @@ class PetController extends Controller
             $data['foto'] = $filename;
         }
 
-        $pet = Pet::create($data);
+        Pet::create($data);
 
-        return new PetsResource($pet);
+        return response()->json([
+            'success' => 'Pet cadastrado com sucesso!',
+        ], 201);
     }
 
 
