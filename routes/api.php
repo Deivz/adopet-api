@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdotanteController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ResponsavelController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -20,6 +21,14 @@ Route::controller(ResponsavelController::class)->group(function() {
     Route::post('/responsaveis', 'store');
     Route::put('/responsaveis/{responsavel}', 'update');
     Route::delete('/responsaveis/{responsavel}', 'destroy');
+});
+
+Route::controller(UserController::class)->group(function() {
+    Route::get('/users', 'index');
+    Route::get('/users/{user}', 'show');
+    Route::post('/users', 'store');
+    Route::put('/users/{user}', 'update');
+    Route::delete('/users/{user}', 'destroy');
 });
 
 Route::controller(PetController::class)->group(function() {

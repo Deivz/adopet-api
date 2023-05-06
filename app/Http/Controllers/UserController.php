@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
+use function Psy\debug;
+
 class UserController extends Controller
 {
 	public function index(): Collection
@@ -27,6 +29,8 @@ class UserController extends Controller
 		}
 
 		$data = $request->all();
+		
+		$data['password'] = bcrypt($request->password);
 
 		User::create($data);
 
